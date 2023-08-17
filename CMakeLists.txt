@@ -23,9 +23,38 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(${UNIENGINE_DEPEND_DIR}/glfw)
 
+#using Diligent Core: https://github.com/jakeloo/glfw-diligent/blob/master/CMakeLists.txt
+add_subdirectory(${UNIENGINE_DEPEND_DIR}/DiligentCore)
+set(UNI_COMPILE_OPTIONS -DUNICODE)
+
+set(Diligent_LIBS Diligent-GraphicsEngine)
+if(D3D11_SUPPORTED)
+  set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineD3D11-static)
+endif()
+
+if (D3D12_SUPPORTED)
+  set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineD3D12-static)
+endif()
+
+if (GL_SUPPORTED)
+  message("Diligent support gl!")
+  set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineOpenGL-static)
+endif()
+
+if (VULKAN_SUPPORTED)
+  set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineVk-static)
+endif()
+
+if (METAL_SUPPORTED)
+  set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineMetal-static)
+endif()
+
 #source code
 set(SOURCES main.cpp)
 
 #target
-add_executable(hello_uniengine ${SOURCES})
-target_link_libraries(hello_uniengine glfw)
+set(UNI_TARGET hello_uniengine)
+add_executable(${UNI_TARGET} ${SOURCES})
+target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
+target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/DiligentCore)
+target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})
