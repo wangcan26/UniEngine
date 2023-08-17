@@ -1,6 +1,6 @@
 [submodule "third_party/glfw"]
 	path = third_party/glfw
 	url = git@github.com:glfw/glfw.git
-[submodule "DiligentCore"]
-	path = DiligentCore
+[submodule "third_party/DiligentCore"]
+	path = third_party/DiligentCore
 	url = git@github.com:DiligentGraphics/DiligentCore.git
