@@ -49,12 +49,18 @@ if (METAL_SUPPORTED)
   set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsEngineMetal-static)
 endif()
 
-#source code
-set(SOURCES main.cpp)
+include_directories(${UNIENGINE_DEPEND_DIR}/glfw/include)
+include_directories(${UNIENGINE_DEPEND_DIR}/NanoLog)
 
-#target
+#source code
+file(GLOB EXTERN_SOURCES ${UNIENGINE_ROOT_DIR}/externs/*.cpp)
+file(GLOB DEPEND_LOG_SOURCES ${UNIENGINE_DEPEND_DIR}/NanoLog/*.cpp)
+set(SOURCES ${EXTERN_SOURCES} ${DEPEND_LOG_SOURCES} main.cpp)
+message("sources: ${SOURCES}")
+
+#targetcd 
 set(UNI_TARGET hello_uniengine)
 add_executable(${UNI_TARGET} ${SOURCES})
 target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/DiligentCore)
+target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/glfw/include ${UNIENGINE_DEPEND_DIR}/DiligentCore)
 target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})

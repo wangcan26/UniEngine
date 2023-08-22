@@ -1,5 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <memory>
+#include "externs/uni_sample_app.h"
+#include "NanoLog.hpp"
+
 #define GLFW_EXPOSE_NATIVE_COCOA
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
@@ -11,6 +15,7 @@
 #include "Graphics/GraphicsEngine/interface/SwapChain.h"
 #include "Common/interface/RefCntAutoPtr.hpp"
 
+using NativeSampleApp = universe::GLFWAppBase;
 using namespace Diligent;
 
 void glfw_error_callback(int error, const char* description)
@@ -20,7 +25,12 @@ void glfw_error_callback(int error, const char* description)
 
 int main()
 {
-    std::cout << "Hello UniEngine" << std::endl;
+    nanolog::initialize(nanolog::GuaranteedLogger(), "/Users/bytedance/Workspace/UniverseEngine/UniEngine/build/", "nanolog", 1);
+    nanolog::set_log_level(nanolog::LogLevel::INFO);
+    LOG_INFO << "Hello UniEngine";
+    
+    std::unique_ptr<NativeSampleApp> sampleApp = std::make_unique<universe::SampleApp>();
+
     GLFWwindow* window  = nullptr;
 
     //Initialize and terminating GLFW
