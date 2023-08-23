@@ -13,14 +13,14 @@ namespace universe
         LOG_INFO << "SampleApp deconstructor";
     }
 
-    void SampleApp::initialize(void* winHandle, RenderMode mode)
+    void SampleApp::initialize(CreateInfo& createInfo)
     {
-
+        GLFWAppBase::initialize(createInfo);
     }
 
     void SampleApp::deinitialize()
     {
-
+        GLFWAppBase::deinitialize();
     }
 
     void SampleApp::update(double curTime, double elapsedTime)

@@ -11,7 +11,7 @@ namespace universe
 
         ~SampleApp();
 
-        void initialize(void* winHandle, RenderMode mode) override;
+        void initialize(CreateInfo& createInfo) override;
 
         void deinitialize() override;
 
