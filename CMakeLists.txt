@@ -18,8 +18,9 @@ IF(APPLE)
   add_definitions(-DUNI_PLATFORM_MACOS=1)
 ENDIF(APPLE)
 
-#Dependencies
 set(UNIENGINE_DEPEND_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
+set(UNIENGINE_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/externs/)
+#Dependencies
 #using glfw : https://www.glfw.org/docs/latest/
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -55,9 +56,10 @@ endif()
 
 include_directories(${UNIENGINE_DEPEND_DIR}/glfw/include)
 include_directories(${UNIENGINE_DEPEND_DIR}/NanoLog)
+include_directories(${UNIENGINE_EXTERN_DIR}/)
 
 #source code
-file(GLOB EXTERN_SOURCES ${UNIENGINE_ROOT_DIR}/externs/*.cpp)
+file(GLOB EXTERN_SOURCES ${UNIENGINE_ROOT_DIR}/externs/*/*.cpp)
 file(GLOB DEPEND_LOG_SOURCES ${UNIENGINE_DEPEND_DIR}/NanoLog/*.cpp)
 set(SOURCES ${EXTERN_SOURCES} ${DEPEND_LOG_SOURCES} main.cpp)
 message("sources: ${SOURCES}")
@@ -66,5 +68,6 @@ message("sources: ${SOURCES}")
 set(UNI_TARGET hello_uniengine)
 add_executable(${UNI_TARGET} ${SOURCES})
 target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/glfw/include ${UNIENGINE_DEPEND_DIR}/DiligentCore)
+target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/glfw/include 
+  ${UNIENGINE_DEPEND_DIR}/DiligentCore)
 target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})

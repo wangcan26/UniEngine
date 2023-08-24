@@ -1,6 +1,7 @@
 #pragma once
 
 #include "uni_app_base.h"
+#include "uni_sample_base.h"
 #define GLFW_EXPOSE_NATIVE_COCOA
 #include <GLFW/glfw3.h>
 
@@ -23,6 +24,7 @@ namespace universe
             RenderMode renderMode = RenderMode::OpenGL;
             int majorVersion = 4;
             int minorVersion = 1;
+            bool vSync = false;
         }CreateInfo;
 
         GLFWAppBase();
@@ -37,7 +39,11 @@ namespace universe
 
         virtual bool isRunning();
 
-    private:
+        void present() override;
+
+    protected:
         GLFWwindow* mWindow;
+        SampleBase* mSample = nullptr;
+        bool        mVsync = false;
     };
 }

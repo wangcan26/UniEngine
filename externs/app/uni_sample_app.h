@@ -19,8 +19,6 @@ namespace universe
 
         void render() override;
 
-        void present() override;
-
         void windowResize(int width, int height) override; 
     private:
     };

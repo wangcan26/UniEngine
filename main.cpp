@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include "externs/uni_sample_app.h"
+#include "app/uni_sample_app.h"
 #include "NanoLog.hpp"
 
 using NativeSampleApp = universe::GLFWAppBase;

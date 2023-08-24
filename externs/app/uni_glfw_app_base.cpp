@@ -27,8 +27,10 @@ namespace universe
         int backendMinV = createInfo.minorVersion;
         int backendMaxV = createInfo.majorVersion;
         char* title = createInfo.title;
+        mVsync = createInfo.vSync;
         LOG_INFO << "GLFWAppBase initialize info <<<title: " << title << " width: " << width 
-            << " height: " << height << " minV: " << backendMinV << " maxV: " << backendMaxV; 
+            << " height: " << height << " minV: " << backendMinV << " maxV: " << backendMaxV
+            << " vSync: " << mVsync; 
         //Initialize and terminating GLFW
         if(!glfwInit())
         {
@@ -93,6 +95,12 @@ namespace universe
 
 
         //Initialize Sample
+        mSample = createSample();
+        if(!mSample)
+        {
+            LOG_INFO << "GLFWAppBase failed to create sample";
+            return;
+        }
         mNumImmediateCtx = numImmediateContext;
         mPContexts.resize(ppContexts.size());
         for(size_t i = 0; i < ppContexts.size(); ++i)
@@ -106,7 +114,15 @@ namespace universe
         mSwapChain = swapChain;
         mPImmediateContext = mPContexts[0];
         mNumDeferredCtx = static_cast<Diligent::Uint32>(mPContexts.size()) - mNumImmediateCtx;
-
+        SampleBase::SampleInitInfo sampleInitInfo {
+            .pEngineFactory = mEngineFactory,
+            .pRenderDevice = mDevice,
+            .pDeviceContext = mPImmediateContext,
+            .pSwapChain = mSwapChain,
+            .numImmediateCtx = mNumImmediateCtx,
+            .numDefferredCtx = mNumDeferredCtx
+        };
+        mSample->initialize(sampleInitInfo);
         mInitialized = true;
     }
 
@@ -116,6 +132,24 @@ namespace universe
         {
             return;
         }
+
+        if(mSample)
+        {
+            mSample->deinitialize();
+            delete mSample;
+        }
+        if(!mPContexts.empty())
+        {
+            for(Diligent::Uint32 q = 0; q < mNumImmediateCtx; ++q)
+            {
+                mPContexts[q]->Flush();
+            }
+            mPContexts.clear();
+        }
+        mNumImmediateCtx = 0;
+        mSwapChain.Release();
+        mDevice.Release();
+
         //destroy window
          glfwDestroyWindow(mWindow);
 
@@ -145,5 +179,16 @@ namespace universe
             return true;
         }
         return false;
+    }
+
+    void GLFWAppBase::present()
+    {
+        if(!mSwapChain)
+        {
+            return;
+        }
+#if UNI_PLATFORM_MACOS
+        //do nothing
+#endif 
     }
 }
