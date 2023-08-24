@@ -1,6 +1,5 @@
 #include "uni_glfw_app_base.h"
 #include <GLFW/glfw3native.h>
-#include <vector>
 #include "NanoLog.hpp"
 #include "EngineFactoryOpenGL.h"
 
@@ -71,17 +70,43 @@ namespace universe
         Diligent::RefCntAutoPtr<Diligent::ISwapChain>  swapChain;
         Diligent::RefCntAutoPtr<Diligent::IRenderDevice> device;
 
+#if UNI_PLATFORM_MACOS
+        scDesc.BufferCount = 3;
+#endif 
+        int numImmediateContext = 1;
         if(mode == RenderMode::OpenGL)
         {
             auto* pFactoryOpenGL =  Diligent::GetEngineFactoryOpenGL();
             engineFactory = pFactoryOpenGL;
             Diligent::EngineGLCreateInfo engineCI;
             engineCI.Window = nw;
-            engineCI.NumDeferredContexts = 0;
-            ppContexts.resize(1 + engineCI.NumDeferredContexts);
+            engineCI.NumDeferredContexts = mNumDeferredCtx;
+            ppContexts.resize(numImmediateContext + engineCI.NumDeferredContexts);
             pFactoryOpenGL->CreateDeviceAndSwapChainGL(engineCI, &device, ppContexts.data(), scDesc, &swapChain);
-        }       
+        }
+
+        if(!device)
+        {
+            LOG_INFO << "GLFWAppBase failed to create render swapchain and device";
+            return;
+        }
+
+
+        //Initialize Sample
+        mNumImmediateCtx = numImmediateContext;
+        mPContexts.resize(ppContexts.size());
+        for(size_t i = 0; i < ppContexts.size(); ++i)
+        {
+            mPContexts[i].Attach(ppContexts[i]);
+        }
         
+
+        mDevice = device;
+        mEngineFactory = engineFactory;
+        mSwapChain = swapChain;
+        mPImmediateContext = mPContexts[0];
+        mNumDeferredCtx = static_cast<Diligent::Uint32>(mPContexts.size()) - mNumImmediateCtx;
+
         mInitialized = true;
     }
 

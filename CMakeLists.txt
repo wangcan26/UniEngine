@@ -14,6 +14,10 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
+IF(APPLE)
+  add_definitions(-DUNI_PLATFORM_MACOS=1)
+ENDIF(APPLE)
+
 #Dependencies
 set(UNIENGINE_DEPEND_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 #using glfw : https://www.glfw.org/docs/latest/

@@ -4,6 +4,7 @@
 #include "RenderDevice.h"
 #include "DeviceContext.h"
 #include "SwapChain.h"
+#include <vector>
 
 namespace universe 
 {
@@ -24,10 +25,12 @@ namespace universe
     protected:
         bool mInitialized = false;
 
-        Diligent::IEngineFactory*  mEngineFactory = nullptr;
-        Diligent::IRenderDevice*   mDevice = nullptr;
-        Diligent::IDeviceContext** mPContexts = nullptr;
+        Diligent::RefCntAutoPtr<Diligent::IEngineFactory>  mEngineFactory;
+        Diligent::RefCntAutoPtr<Diligent::IRenderDevice>   mDevice;
+        std::vector<Diligent::RefCntAutoPtr<Diligent::IDeviceContext>> mPContexts;
+        Diligent::RefCntAutoPtr<Diligent::IDeviceContext>  mPImmediateContext;
         Diligent::Uint32           mNumImmediateCtx = 1;
         Diligent::Uint32           mNumDeferredCtx = 0;
+        Diligent::RefCntAutoPtr<Diligent::ISwapChain>                  mSwapChain;
     };
 }
