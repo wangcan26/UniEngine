@@ -9,6 +9,12 @@ namespace universe
     {
         LOG_INFO << "glfw report error code: " << error << " with description: " << description;
     }
+    void glfw_window_resize_callback(GLFWwindow* wnd, int w, int h)
+    {
+        auto* pSelf = static_cast<GLFWAppBase*>(glfwGetWindowUserPointer(wnd));
+        if (pSelf != nullptr)
+            pSelf->windowResize(w, h);
+    }
     GLFWAppBase::GLFWAppBase()
     {
         LOG_INFO << "GLFWAppBase constructor";
@@ -58,6 +64,9 @@ namespace universe
             glfwTerminate();
             return ;
         }
+        //set callbacks for window
+        glfwSetWindowUserPointer(mWindow, this);
+         glfwSetFramebufferSizeCallback(mWindow, glfw_window_resize_callback);
 
         glfwMakeContextCurrent(mWindow);
 

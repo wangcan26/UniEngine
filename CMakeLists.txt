@@ -59,15 +59,18 @@ include_directories(${UNIENGINE_DEPEND_DIR}/NanoLog)
 include_directories(${UNIENGINE_EXTERN_DIR}/)
 
 #source code
-file(GLOB EXTERN_SOURCES ${UNIENGINE_ROOT_DIR}/externs/*/*.cpp)
+file(GLOB EXTERN_SOURCES_APP ${UNIENGINE_ROOT_DIR}/externs/app/*.cpp)
 file(GLOB DEPEND_LOG_SOURCES ${UNIENGINE_DEPEND_DIR}/NanoLog/*.cpp)
-set(SOURCES ${EXTERN_SOURCES} ${DEPEND_LOG_SOURCES} main.cpp)
+set(SOURCES ${EXTERN_SOURCES_APP} ${DEPEND_LOG_SOURCES} main.cpp)
 message("sources: ${SOURCES}")
 
-#targetcd 
-set(UNI_TARGET hello_uniengine)
-add_executable(${UNI_TARGET} ${SOURCES})
-target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-target_include_directories(${UNI_TARGET} PRIVATE ${UNIENGINE_DEPEND_DIR}/glfw/include 
+#targets
+#helleo_triangle 
+set(UNI_TARGET_TRIANGLE hello_triangle)
+file(GLOB SOURCES_TRIANGLE_SAMPLE ${UNIENGINE_ROOT_DIR}/externs/samples/triangle/*.cpp)
+set(SOURCES ${SOURCES} ${SOURCES_TRIANGLE_SAMPLE})
+add_executable(${UNI_TARGET_TRIANGLE} ${SOURCES})
+target_compile_options(${UNI_TARGET_TRIANGLE} PRIVATE ${UNI_COMPILE_OPTIONS})
+target_include_directories(${UNI_TARGET_TRIANGLE} PRIVATE ${UNIENGINE_DEPEND_DIR}/glfw/include 
   ${UNIENGINE_DEPEND_DIR}/DiligentCore)
-target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})
+target_link_libraries(${UNI_TARGET_TRIANGLE} glfw ${Diligent_LIBS})

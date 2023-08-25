@@ -52,6 +52,10 @@ namespace universe
 
     void SampleApp::windowResize(int width, int height)
     {
-
+        if(!mSwapChain)
+        {
+            return;
+        }
+        mSwapChain->Resize(width, height);
     }
 } 
