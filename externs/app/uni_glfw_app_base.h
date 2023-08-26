@@ -4,11 +4,13 @@
 #include "uni_sample_base.h"
 #define GLFW_EXPOSE_NATIVE_COCOA
 #include <GLFW/glfw3.h>
+#include "Timer.hpp"
 
 namespace universe
 {
     class GLFWAppBase : public AppBase 
     {
+        using AppBase::update;
     public:
         enum class RenderMode
         {
@@ -37,6 +39,8 @@ namespace universe
 
         virtual bool isInitialized();
 
+        virtual void update();
+
         virtual bool isRunning();
 
         void present() override;
@@ -45,5 +49,7 @@ namespace universe
         GLFWwindow* mWindow;
         SampleBase* mSample = nullptr;
         bool        mVsync = false;
+        Diligent::Timer  mTimer;
+        double           mLastTime = 0.0;
     };
 }

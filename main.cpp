@@ -18,7 +18,7 @@ int main()
 
     while(sampleApp->isRunning())
     {
-        sampleApp->update(0.0, 0.0);
+        sampleApp->update();
         sampleApp->render();
         sampleApp->present();
     }

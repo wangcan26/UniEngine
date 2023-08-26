@@ -100,6 +100,7 @@ namespace universe
         //create pipeline state
         pipelineStateCreateInfo.pVS = vs;
         pipelineStateCreateInfo.pPS = fs;
+
         mRenderDevice->CreateGraphicsPipelineState(pipelineStateCreateInfo, &mPSO);
     }
 

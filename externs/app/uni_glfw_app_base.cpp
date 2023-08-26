@@ -171,6 +171,14 @@ namespace universe
         return mInitialized;
     }
 
+    void GLFWAppBase::update()
+    {
+        auto curTime = mTimer.GetElapsedTime();
+        auto elapsedTime = curTime - mLastTime;
+        mLastTime = curTime;
+        update(curTime,  elapsedTime);
+    }
+
     bool GLFWAppBase::isRunning()
     {
         if(!isInitialized())
