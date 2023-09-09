@@ -4,3 +4,6 @@
 [submodule "third_party/DiligentCore"]
 	path = third_party/DiligentCore
 	url = git@github.com:DiligentGraphics/DiligentCore.git
+[submodule "third_party/FrameGraph"]
+	path = third_party/FrameGraph
+	url = git@github.com:skaarj1989/FrameGraph.git

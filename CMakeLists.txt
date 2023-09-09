@@ -55,10 +55,17 @@ if (METAL_SUPPORTED)
 endif()
 set(Diligent_LIBS ${Diligent_LIBS} Diligent-GraphicsTools Diligent-TargetPlatform)
 
+#using FrameGraph
+add_definitions(-D_HAS_CXX20=0)
+set(FG_BUILD_TEST OFF)
+add_subdirectory(third_party/FrameGraph)
+
+#include headers
 include_directories(${UNIENGINE_DEPEND_DIR}/glfw/include)
 include_directories(${UNIENGINE_DEPEND_DIR}/NanoLog)
 include_directories(${UNIENGINE_EXTERN_DIR}/)
 include_directories(${UNIENGINE_DEPEND_DIR}/DiligentCore/Graphics/GraphicsTools/interface)
+include_directories(${UNIENGINE_DEPEND_DIR}/FrameGraph/include)
 
 #source code
 file(GLOB EXTERN_SOURCES_APP ${UNIENGINE_ROOT_DIR}/externs/app/*.cpp)
@@ -73,7 +80,7 @@ file(GLOB SOURCES_SAMPLE_TRIANGLE ${UNIENGINE_ROOT_DIR}/externs/samples/triangle
 set(SOURCES ${UNI_SOURCES} ${SOURCES_SAMPLE_TRIANGLE})
 add_executable(${UNI_TARGET} ${SOURCES})
 target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})
+target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph)
 
 #sample_buffers
 set(UNI_TARGET sample_buffers)
@@ -81,4 +88,4 @@ file(GLOB SOURCES_SAMPLE_BUFFERS ${UNIENGINE_ROOT_DIR}/externs/samples/buffers/*
 set(SOURCES ${UNI_SOURCES} ${SOURCES_SAMPLE_BUFFERS})
 add_executable(${UNI_TARGET} ${SOURCES})
 target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS})
+target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph)
