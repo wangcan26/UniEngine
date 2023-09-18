@@ -1,2 +1,6 @@
 ./build
 ./.vscode
+./android/.gradle
+./android/local.properties
+./android/.idea
+./android/.*/
