@@ -1,6 +1,6 @@
 ./build
 ./.vscode
-./android/.gradle
-./android/local.properties
-./android/.idea
-./android/.*/
+./externs/samples/android/.gradle
+./externs/samples/android/local.properties
+./externs/samples/android/.idea
+./externs/samples/android/.*/
