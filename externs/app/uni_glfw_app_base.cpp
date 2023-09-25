@@ -66,7 +66,7 @@ namespace universe
         }
         //set callbacks for window
         glfwSetWindowUserPointer(mWindow, this);
-         glfwSetFramebufferSizeCallback(mWindow, glfw_window_resize_callback);
+        glfwSetFramebufferSizeCallback(mWindow, glfw_window_resize_callback);
 
         glfwMakeContextCurrent(mWindow);
 

@@ -13,6 +13,24 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            // Specifies the ABI configurations of your native
+             // libraries Gradle should build and package with your APK.
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+        }
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_static"
+                cppFlags "-std=c++17"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            version '3.22.1'
+            path '../../../../CMakeLists.txt'
+        }
     }
 
     buildTypes {
