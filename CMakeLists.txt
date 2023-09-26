@@ -82,10 +82,14 @@ add_definitions(-D_HAS_CXX20=0)
 set(FG_BUILD_TEST OFF)
 add_subdirectory(third_party/FrameGraph)
 
+#using NanoLog
+add_subdirectory(third_party/NanoLog)
+
 #include headers
 if(NOT PLATFORM_ANDROID)
   include_directories(${UNIENGINE_DEPEND_DIR}/glfw/include)
 endif()
+
 include_directories(${UNIENGINE_DEPEND_DIR}/NanoLog)
 include_directories(${UNIENGINE_EXTERN_DIR}/)
 include_directories(${UNIENGINE_DEPEND_DIR}/DiligentCore/Graphics/GraphicsTools/interface)
@@ -93,7 +97,6 @@ include_directories(${UNIENGINE_DEPEND_DIR}/FrameGraph/include)
 
 #source code
 file(GLOB EXTERN_SOURCES_APP ${UNIENGINE_ROOT_DIR}/externs/app/*.cpp)
-file(GLOB DEPEND_LOG_SOURCES ${UNIENGINE_DEPEND_DIR}/NanoLog/*.cpp)
 
 
 if(NOT PLATFORM_ANDROID)
@@ -101,7 +104,7 @@ if(NOT PLATFORM_ANDROID)
 else()
 endif()
 
-set(UNI_SOURCES ${EXTERN_SOURCES_APP} ${DEPEND_LOG_SOURCES} ${UNI_MAIN_SOURCES})
+set(UNI_SOURCES ${EXTERN_SOURCES_APP} ${UNI_MAIN_SOURCES})
 message("sources: ${SOURCES}")
 
 #targets
@@ -112,7 +115,7 @@ if(NOT PLATFORM_ANDROID)
   set(SOURCES ${UNI_SOURCES} ${SOURCES_SAMPLE_TRIANGLE})
   add_executable(${UNI_TARGET} ${SOURCES})
   target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-  target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph)
+  target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph NanoLog)
 
   #sample_buffers
   set(UNI_TARGET sample_buffers)
@@ -120,9 +123,9 @@ if(NOT PLATFORM_ANDROID)
   set(SOURCES ${UNI_SOURCES} ${SOURCES_SAMPLE_BUFFERS})
   add_executable(${UNI_TARGET} ${SOURCES})
   target_compile_options(${UNI_TARGET} PRIVATE ${UNI_COMPILE_OPTIONS})
-  target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph)
+  target_link_libraries(${UNI_TARGET} glfw ${Diligent_LIBS} fg::FrameGraph NanoLog)
 else()
   set(SOURCES ${UNIENGINE_ROOT_DIR}/externs/main/android_main.cpp)
   add_library(universe SHARED ${SOURCES})
-  target_link_libraries(universe PUBLIC ${Diligent_LIBS} fg::FrameGraph android)
+  target_link_libraries(universe PUBLIC ${Diligent_LIBS} fg::FrameGraph android NanoLog)
 endif()
